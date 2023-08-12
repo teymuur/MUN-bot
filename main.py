@@ -23,12 +23,13 @@ async def say_(ctx,*text):
     my_str = ' '.join(text)
     await ctx.send(my_str)
 @bot.command()
-async def talk_(ctx,*a):
-
+async def talk_(ctx,*aa):
+    a = aa.join(' ')
+    a = a.lower()
     if "purpose" in a :
         response = 'This command has been made for Omar to sense female attention, No need to thank'
-    elif "who" in a and "love" in a:
-        response = "My most beloved one is my creator Teymur"
+    elif "credit" in a:
+        response = "Created by Teymur in behalf of the Sabis Sun Mun It Team. Original Idea: kakoyta Omar"
     elif 'love' in a:
         response = 'Love you too honey~'
     elif "hug" in a:
@@ -43,7 +44,7 @@ async def talk_(ctx,*a):
         response = "I'm in the mood for a movie night. What genre do you prefer?"
     elif "exercise" in a:
         response = "Staying active is important! How about we do a quick workout together?"
-    elif "l" in a:
+    elif " l " in a:
         response = "L yourself bitch"
     elif "angry" in a and "you" in a:
         response = "Who is angry I am not angry I AM SO CALM LOOK AT ME"
@@ -67,5 +68,5 @@ async def rate_(ctx, member: discord.Member):
         await ctx.send(str(ratings.get(str(member)))+"/10")
     else:
         await ctx.send("User hasnt been rated before also uwu~")
-# Replace 'YOUR_TOKEN_HERE' with your actual bot token
-bot.run('MTEzOTU3NjIwODE4NzcyODAyMw.GvM5lT.gO-LCosa3L952_zG2C_tbCM7TQqfyqCyzZmndo')
+        
+bot.run('TOKEN_HERE')
