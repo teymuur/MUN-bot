@@ -1,6 +1,4 @@
-Sure, here's the documentation for the provided code:
-
-# Discord Bot Documentation
+# Discord Bot version 0.8 pre-alpha
 
 This documentation provides an overview and explanations for the functionalities implemented in the provided Discord bot code.
 
