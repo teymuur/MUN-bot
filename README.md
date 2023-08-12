@@ -1,66 +1,96 @@
+Sure, here's the documentation for the provided code:
 
-## MUN Discord Bot v0.7 pre-alpha Documentation
+# Discord Bot Documentation
 
-### Table of Contents
+This documentation provides an overview and explanations for the functionalities implemented in the provided Discord bot code.
+
+## Table of Contents
+
 1. [Introduction](#introduction)
 2. [Setup](#setup)
-   - [Bot Token](#bot-token)
-   - [Intents](#intents)
-   - [External Data](#external-data)
-3. [Events](#events)
-   - [on_ready_](#on_ready_)
-4. [Commands](#commands)
-   - [say_](#say_)
-   - [talk_](#talk_)
-   - [set_](#set_)
-   - [rate_](#rate_)
-5. [Credits](#credits)
----
+3. [Bot Commands](#bot-commands)
+   - [say](#say)
+   - [talk](#talk)
+   - [set](#set)
+   - [rate](#rate)
+   - [send](#send)
+4. [Event Handling](#event-handling)
+   - [on_ready](#on_ready)
+5. [Utility Functions](#utility-functions)
+   - [has_allowed_role](#has_allowed_role)
+   - [save_file](#save_file)
+6. [Credits](#Credits)
 
-### Introduction <a name="introduction"></a>
-This Python script creates a Discord bot using the discord.py library. The bot listens to messages and responds with predefined actions based on the content of the messages. It also supports rating and retrieving ratings for users. The bot utilizes Discord intents to listen to specific events and commands.
+## Introduction
 
-### Setup <a name="setup"></a>
+This code implements a Discord bot using the `discord.py` library. The bot is designed to perform various tasks based on user interactions within a Discord server. It includes functionalities such as responding to specific commands, interacting with users through messages, and managing ratings for users.
 
-#### Bot Token <a name="bot-token"></a>
-Before running the bot, you need to replace the empty string in the `bot.run('')` line with your actual bot token. You can obtain a bot token by creating a new bot on the Discord Developer Portal.
+## Setup
 
-#### Intents <a name="intents"></a>
-The bot uses Discord intents to determine which events it should listen to. In this script, the `message_content` intent is enabled to listen to message content. If you need to listen to additional events, you can modify the `intents` setup.
+1. **Import Dependencies**: The necessary dependencies are imported, including the `discord` and `commands` modules from `discord.ext`.
+   
+2. **Intents Configuration**: Discord intents are configured to allow certain events to be tracked. Specifically, the bot subscribes to the `message_content` intent to receive message content events.
 
-#### External Data <a name="external-data"></a>
-The bot reads and writes ratings data to a JSON file named `ratings.json`. Make sure this file exists in the same directory as the script. Ratings are stored as a dictionary with member IDs as keys and ratings as values.
+3. **Bot Initialization**: The bot is initialized using the `commands.Bot` class. It uses a custom command prefix and the defined intents.
 
-### Events <a name="events"></a>
+4. **Read Ratings**: The bot reads existing ratings from a JSON file named "ratings.json" and stores them in the `ratings` dictionary.
 
-#### on_ready_ <a name="on_ready_"></a>
-This event is triggered when the bot is successfully logged in and connected to Discord. It prints the bot's name and ID to the console.
+## Bot Commands
 
-### Commands <a name="commands"></a>
+### say
 
-#### say_ <a name="say_"></a>
-Usage: `_say_ <text>`
+- **Description**: Echoes back the provided text.
+- **Usage**: `say <text>`
+- **Example**: `say Hello, world!`
 
-This command makes the bot send a message containing the specified text to the channel where the command was issued.
+### talk
 
-#### talk_ <a name="talk_"></a>
-Usage: `_talk_ <text>`
+- **Description**: Responds with predefined messages based on the input keywords.
+- **Usage**: `talk <message>`
+- **Examples:`
+   - `talk purpose`
+   - `talk credit`
+   - `talk love`
+   - ...
 
-This command analyzes the input text and responds with pre-defined messages based on specific keywords present in the text. It supports keywords like "purpose," "credit," "love," "hug," "date," "music," "dream," "movie," "exercise," "l," "angry," "bye," and "pic." If none of these keywords are detected, a default response is sent.
+### set
 
-#### set_ <a name="set_"></a>
-Usage: `_set_ <member> [rating]`
+- **Description**: Sets a rating for a specified user.
+- **Usage**: `set <user_mention> <rating>`
+- **Example**: `set @User123 8`
 
-This command allows you to set a rating for a specific member. The member's ID and the desired rating (optional, default is 0) are provided as arguments. The ratings are stored in the `ratings` dictionary and saved to the `ratings.json` file.
+### rate
 
-#### rate_ <a name="rate_"></a>
-Usage: `_rate_ <member>`
+- **Description**: Displays the rating of a specified user.
+- **Usage**: `rate <user_mention>`
+- **Example**: `rate @User123`
 
-This command retrieves the rating of a specific member. If the member has been rated before, their rating is displayed. If the member hasn't been rated, a message indicating that the user hasn't been rated before is sent.
+### send
 
-### Credits <a name="credits"></a>
-This bot has been made by Teymur Babayev on behalf of the Sabis Sun MUN It Team lead by Ismayil Mollayev. Other Contributors: Tamerlan Dudushov. Original Idea by MUN Organizer Omar Mammadli.
+- **Description**: Sends an image to the current channel.
+- **Usage**: `send`
+- **Example**: `send`
 
----
+## Event Handling
 
-Remember to handle error cases and input validation appropriately in your code. This documentation provides an overview of the existing commands and their functionality. You can extend and customize the bot's commands and responses according to your preferences.
+### on_ready
+
+- **Description**: This event is triggered when the bot is successfully logged in and ready to operate.
+- **Functionality**: Prints the bot's name and ID to the console.
+
+## Utility Functions
+
+### has_allowed_role
+
+- **Description**: A command check decorator that restricts command usage to users with specified roles.
+- **Parameters**: Accepts a variable number of role names.
+- **Usage**: Apply `@has_allowed_role('<role_name>')` decorator above a command definition.
+
+### save_file
+
+- **Description**: Writes the `ratings` dictionary to the "ratings.json" file.
+- **Usage**: Called to save ratings data after modifications.
+
+## Credits
+
+Made by Teymur Babayev on behalf of Sabis Sun IT Team lead by Ismayil Mollayev. Other contributor Tamerlan Dudushov. Original Idea by Omar Mammadli.
