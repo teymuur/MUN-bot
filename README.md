@@ -1,6 +1,5 @@
-Sure, here's a comprehensive documentation for the provided code:
 
-## Discord Bot Documentation
+## MUN Discord Bot Documentation
 
 ### Table of Contents
 1. [Introduction](#introduction)
@@ -15,7 +14,7 @@ Sure, here's a comprehensive documentation for the provided code:
    - [talk_](#talk_)
    - [set_](#set_)
    - [rate_](#rate_)
-
+5. [Credits](#credits)
 ---
 
 ### Introduction <a name="introduction"></a>
@@ -58,6 +57,9 @@ This command allows you to set a rating for a specific member. The member's ID a
 Usage: `_rate_ <member>`
 
 This command retrieves the rating of a specific member. If the member has been rated before, their rating is displayed. If the member hasn't been rated, a message indicating that the user hasn't been rated before is sent.
+
+### Credits <a name="credits"></a>
+This bot has been made by Teymur Babayev on behalf of the Sabis Sun MUN It Team lead by Ismayil Mollayev. Other Contributors: Tamerlan Dudushov. Original Idea by MUN Organizer Omar Mammadli.
 
 ---
 
