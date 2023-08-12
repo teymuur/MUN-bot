@@ -1,5 +1,5 @@
 
-## MUN Discord Bot Documentation
+## MUN Discord Bot v0.7 pre-alpha Documentation
 
 ### Table of Contents
 1. [Introduction](#introduction)
