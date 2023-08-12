@@ -1,3 +1,4 @@
+# Version 0.7 pre-alpha
 import discord
 from discord.ext import commands
 
