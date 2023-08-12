@@ -1,31 +1,39 @@
-# Version 0.7 pre-alpha
+# version 0.8 pre-alpha
 import discord
 from discord.ext import commands
 
 intents = discord.Intents.default()
 intents.message_content = True
 
-bot = commands.Bot(command_prefix='_', intents=intents)
+bot = commands.Bot(command_prefix='', intents=intents)
 f = open("ratings.json", "r")
 
 ratings= eval(f.read())
 f.close()
+def has_allowed_role(*allowed_roles):
+    async def predicate(ctx):
+        author_roles = [role.name for role in ctx.author.roles]
+        allowed = any(role in allowed_roles for role in author_roles)
+        if not allowed:
+            await ctx.send("You don't have permission to use this command.")
+        return allowed
+    return commands.check(predicate)
 def save_file():
     f = open("ratings.json", "w")
     f.write(str(ratings))
     f.close()
 @bot.event
-async def on_ready_():
+async def on_ready():
     print(f'Logged in as {bot.user.name} - {bot.user.id}')
     print('------')
 
 @bot.command()
-async def say_(ctx,*text):
+async def say(ctx,*text):
     my_str = ' '.join(text)
     await ctx.send(my_str)
 @bot.command()
-async def talk_(ctx,*aa):
-    a = aa.join(' ')
+async def talk(ctx,*aa):
+    a = ''.join(aa)
     a = a.lower()
     if "purpose" in a :
         response = 'This command has been made for Omar to sense female attention, No need to thank'
@@ -59,15 +67,25 @@ async def talk_(ctx,*aa):
         response = "I'm not sure how to respond to that. Can you be more specific?"
     await ctx.send(response)
 @bot.command()
-async def set_(ctx,member:discord.Member,rating=0):
+@has_allowed_role('IT TEAM') 
+async def set(ctx,member:discord.Member,rating=0):
     ratings[str(member)] = rating
     await ctx.send(member.display_name+"'s rating has been set!")
     save_file()
 @bot.command()
-async def rate_(ctx, member: discord.Member):
+@has_allowed_role('IT TEAM')  
+async def rate(ctx, member: discord.Member):
     if ratings.get(str(member)):
         await ctx.send(str(ratings.get(str(member)))+"/10")
     else:
         await ctx.send("User hasnt been rated before also uwu~")
-        
-bot.run('TOKEN_HERE')
+
+@bot.command()
+@has_allowed_role() 
+async def send(ctx):
+
+    with open('my_image.jpg', 'rb') as f:
+        pict = discord.File(f)
+        await ctx.send(file=pict)
+# Replace 'YOUR_TOKEN_HERE' with your actual bot token
+bot.run('TOKEN')
