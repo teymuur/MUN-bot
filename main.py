@@ -1,4 +1,5 @@
-# version 0.8 pre-alpha
+# version 0.9-pre-alpha
+from typing import Optional
 import discord
 from discord.ext import commands
 
@@ -75,7 +76,7 @@ async def set(ctx,member:discord.Member,rating=0):
 @bot.command()
 @has_allowed_role('IT TEAM')  
 async def rate(ctx, member: discord.Member):
-    if ratings.get(str(member)):
+    if ratings.get(str(member)) != None:
         await ctx.send(str(ratings.get(str(member)))+"/10")
     else:
         await ctx.send("User hasnt been rated before also uwu~")
@@ -87,5 +88,81 @@ async def send(ctx):
     with open('my_image.jpg', 'rb') as f:
         pict = discord.File(f)
         await ctx.send(file=pict)
+class CommitteeRole(discord.ui.Select):
+    def __init__(self):
+        options = [ 
+                   discord.SelectOption(label="DAIS", value="DAIS"),
+
+                   discord.SelectOption(label="Delegate", value="Delegate"),
+        ]
+        super().__init__(options=options, placeholder="Who are you?", max_values=1)
+
+    async def callback(self, interaction:discord.Interaction):
+        await self.view.respond_to_answer2(interaction, self.values)
+class MyView(discord.ui.View):
+    answer1 = None 
+    answer2 = None 
+    
+    @discord.ui.select(
+        placeholder="What is your committee?",
+
+        options = [
+            discord.SelectOption(
+                label="UNGA",
+                description="Pick this if you are UNGA!"
+            ),
+            discord.SelectOption(
+                label="UNSC",
+                description="Pick this if you are UNSC!"
+            ),
+            discord.SelectOption(
+                label="OHCHR",
+                description="Pick this if you are OHCHR!"
+            ),
+            discord.SelectOption(
+                label="ICJ",
+                description="Pick this if you are ICJ!"
+            ),
+            discord.SelectOption(
+                label="HSC",
+                description="Pick this if you are HSC!"
+            ),
+            discord.SelectOption(
+                label="UNRWA",
+                description="Pick this if you are UNRWA!"
+            )
+        ]      
+    )
+    async def select_committee(self, interaction:discord.Interaction, select_item : discord.ui.Select):
+        self.answer1 = select_item.values
+        self.children[0].disabled= True
+        committeerole_select = CommitteeRole()
+        self.add_item(committeerole_select)
+        await interaction.message.edit(view=self)
+        await interaction.response.defer()
+
+    async def respond_to_answer2(self, interaction : discord.Interaction, choices):
+        self.answer2 = choices 
+        self.children[1].disabled= True
+        await interaction.message.edit(view=self)
+        await interaction.response.defer()
+        self.stop()
+    
+
+
+@bot.command(pass_context=True)
+async def select_(ctx):
+    view = MyView()
+    await ctx.send(view=view)
+        
+    await view.wait()
+
+        
+    member = ctx.message.author
+    print(view.answer1)
+    await member.add_roles(view.answer1[0],view.answer2[0])
+
+    await ctx.message.author.send("Hey~")
+
 # Replace 'YOUR_TOKEN_HERE' with your actual bot token
 bot.run('TOKEN')
