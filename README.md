@@ -91,4 +91,4 @@ This code implements a Discord bot using the `discord.py` library. The bot is de
 
 ## Credits
 
-Made by Teymur Babayev on behalf of Sabis Sun IT Team lead by Ismayil Mollayev. Other contributor Tamerlan Dudushov. Original Idea by Omar Mammadli.
+Made by Teymur Babayev on behalf of Sabis Sun IT Team lead by Ismayil Mollayev. Other contributor Tamerlan Dadashov. Original Idea by Omar Mammadli.
