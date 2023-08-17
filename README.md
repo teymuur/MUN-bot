@@ -1,4 +1,4 @@
-# Discord Bot version 0.8 pre-alpha
+# Discord Bot Documentation v0.9-pre-alpha
 
 This documentation provides an overview and explanations for the functionalities implemented in the provided Discord bot code.
 
@@ -12,21 +12,26 @@ This documentation provides an overview and explanations for the functionalities
    - [set](#set)
    - [rate](#rate)
    - [send](#send)
+   - [select_](#select_)
 4. [Event Handling](#event-handling)
    - [on_ready](#on_ready)
 5. [Utility Functions](#utility-functions)
    - [has_allowed_role](#has_allowed_role)
    - [save_file](#save_file)
-6. [Credits](#Credits)
+6. [Custom UI Elements](#custom-ui-elements)
+   - [CommitteeRole](#committeerole)
+   - [MyView](#myview)
+   - [select_](#select_)
+7. [Credits](#credits)
 
 ## Introduction
 
-This code implements a Discord bot using the `discord.py` library. The bot is designed to perform various tasks based on user interactions within a Discord server. It includes functionalities such as responding to specific commands, interacting with users through messages, and managing ratings for users.
+This code implements a Discord bot using the `discord.py` library. The bot is designed to perform various tasks based on user interactions within a Discord server. It includes functionalities such as responding to specific commands, interacting with users through messages, managing ratings for users, and providing role-based selections.
 
 ## Setup
 
 1. **Import Dependencies**: The necessary dependencies are imported, including the `discord` and `commands` modules from `discord.ext`.
-   
+
 2. **Intents Configuration**: Discord intents are configured to allow certain events to be tracked. Specifically, the bot subscribes to the `message_content` intent to receive message content events.
 
 3. **Bot Initialization**: The bot is initialized using the `commands.Bot` class. It uses a custom command prefix and the defined intents.
@@ -69,6 +74,12 @@ This code implements a Discord bot using the `discord.py` library. The bot is de
 - **Usage**: `send`
 - **Example**: `send`
 
+### select_
+
+- **Description**: Initiates a role-based selection process using a custom UI element.
+- **Usage**: `select_`
+- **Example**: `select_`
+
 ## Event Handling
 
 ### on_ready
@@ -89,6 +100,23 @@ This code implements a Discord bot using the `discord.py` library. The bot is de
 - **Description**: Writes the `ratings` dictionary to the "ratings.json" file.
 - **Usage**: Called to save ratings data after modifications.
 
+## Custom UI Elements
+
+### CommitteeRole
+
+- **Description**: A custom UI element (Select menu) that provides options for committee roles.
+
+### MyView
+
+- **Description**: A custom UI view that orchestrates the selection process for committee and role.
+
 ## Credits
 
-Made by Teymur Babayev on behalf of Sabis Sun IT Team lead by Ismayil Mollayev. Other contributor Tamerlan Dadashov. Original Idea by Omar Mammadli.
+- **Lead Developer**: Teymur Babayev
+- **Sabis Sun IT Team Lead**: Ismayil Mollayev
+- **Contributor**: Tamerlan Dadashov
+- **Original Idea by**: Omar Mammadli
+
+---
+
+Please note that this documentation provides an overview of the code's functionalities and usage. You can customize and extend the bot's features based on your requirements. Additionally, ensure you replace `'YOUR_TOKEN_HERE'` with your actual bot token before running the bot.
