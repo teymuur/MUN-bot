@@ -1,12 +1,12 @@
-# version 0.9-pre-alpha
-from typing import Optional
+# version 1.0-alpha
+
 import discord
 from discord.ext import commands
 
 intents = discord.Intents.default()
 intents.message_content = True
 
-bot = commands.Bot(command_prefix='', intents=intents)
+bot = commands.Bot()
 f = open("ratings.json", "r")
 
 ratings= eval(f.read())
@@ -28,11 +28,11 @@ async def on_ready():
     print(f'Logged in as {bot.user.name} - {bot.user.id}')
     print('------')
 
-@bot.command()
+@bot.slash_command()
 async def say(ctx,*text):
     my_str = ' '.join(text)
     await ctx.send(my_str)
-@bot.command()
+@bot.slash_command()
 async def talk(ctx,*aa):
     a = ''.join(aa)
     a = a.lower()
@@ -67,13 +67,13 @@ async def talk(ctx,*aa):
     else:
         response = "I'm not sure how to respond to that. Can you be more specific?"
     await ctx.send(response)
-@bot.command()
+@bot.slash_command()
 @has_allowed_role('IT TEAM') 
 async def set(ctx,member:discord.Member,rating=0):
     ratings[str(member)] = rating
     await ctx.send(member.display_name+"'s rating has been set!")
     save_file()
-@bot.command()
+@bot.slash_command()
 @has_allowed_role('IT TEAM')  
 async def rate(ctx, member: discord.Member):
     if ratings.get(str(member)) != None:
@@ -81,27 +81,18 @@ async def rate(ctx, member: discord.Member):
     else:
         await ctx.send("User hasnt been rated before also uwu~")
 
-@bot.command()
+@bot.slash_command()
 @has_allowed_role() 
 async def send(ctx):
 
     with open('my_image.jpg', 'rb') as f:
         pict = discord.File(f)
         await ctx.send(file=pict)
-class CommitteeRole(discord.ui.Select):
-    def __init__(self):
-        options = [ 
-                   discord.SelectOption(label="DAIS", value="DAIS"),
 
-                   discord.SelectOption(label="Delegate", value="Delegate"),
-        ]
-        super().__init__(options=options, placeholder="Who are you?", max_values=1)
 
-    async def callback(self, interaction:discord.Interaction):
-        await self.view.respond_to_answer2(interaction, self.values)
+
 class MyView(discord.ui.View):
-    answer1 = None 
-    answer2 = None 
+
     
     @discord.ui.select(
         placeholder="What is your committee?",
@@ -133,24 +124,12 @@ class MyView(discord.ui.View):
             )
         ]      
     )
-    async def select_committee(self, interaction:discord.Interaction, select_item : discord.ui.Select):
-        self.answer1 = select_item.values
-        self.children[0].disabled= True
-        committeerole_select = CommitteeRole()
-        self.add_item(committeerole_select)
-        await interaction.message.edit(view=self)
-        await interaction.response.defer()
+    async def select_callback(self, select, interaction): # the function called when the user is done selecting options
+        await interaction.response.send_message(f"Awesome! I like {select.values[0]} too!")
 
-    async def respond_to_answer2(self, interaction : discord.Interaction, choices):
-        self.answer2 = choices 
-        self.children[1].disabled= True
-        await interaction.message.edit(view=self)
-        await interaction.response.defer()
-        self.stop()
+
     
-
-
-@bot.command(pass_context=True)
+@bot.slash_command()
 async def select_(ctx):
     view = MyView()
     await ctx.send(view=view)
@@ -164,5 +143,6 @@ async def select_(ctx):
 
     await ctx.message.author.send("Hey~")
 
+
 # Replace 'YOUR_TOKEN_HERE' with your actual bot token
-bot.run('TOKEN')
+bot.run('')
