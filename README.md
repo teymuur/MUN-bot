@@ -1,4 +1,4 @@
-# Discord Bot Documentation v1.1-alpha
+# SABIS MUN Discord Bot Documentation v1.1-alpha
 
 
 ## Table of Contents
