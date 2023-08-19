@@ -1,8 +1,5 @@
+# Discord Bot Documentation v1.1-alpha
 
-
-# Discord Bot Documentation v1.0-alpha
-
-This documentation provides an overview and explanations for the functionalities implemented in the provided Discord bot code.
 
 ## Table of Contents
 
@@ -11,10 +8,6 @@ This documentation provides an overview and explanations for the functionalities
 3. [Bot Commands](#bot-commands)
    - [say](#say)
    - [talk](#talk)
-   - [set](#set)
-   - [rate](#rate)
-   - [send](#send)
-   - [select_](#select_)
 4. [Event Handling](#event-handling)
    - [on_ready](#on_ready)
 5. [Utility Functions](#utility-functions)
@@ -26,7 +19,7 @@ This documentation provides an overview and explanations for the functionalities
 
 ## Introduction
 
-This code implements a Discord bot using the `discord.py` library. The bot is designed to perform various tasks based on user interactions within a Discord server. It includes functionalities such as responding to specific slash commands, interacting with users through messages, managing ratings for users, providing role-based selections, and more.
+This code implements a Discord bot using the `discord.py` library. The bot is designed to perform various tasks based on user interactions within a Discord server. It includes functionalities such as responding to slash commands, interacting with users through messages, managing ratings for users, providing role-based selections, and more. This documentation focuses specifically on the "talk" command's behavior.
 
 ## Setup
 
@@ -53,32 +46,24 @@ This code implements a Discord bot using the `discord.py` library. The bot is de
 - **Examples:`
    - `/talk purpose`
    - `/talk credit`
-   - `/talk love`
+   - `/talk life what`
+   - `/talk MUN`
    - ...
 
-### set
+   **Additional Details for "talk" Command**:
+   - The "talk" command is designed to provide responses based on specific keywords present in the input message.
+   - Keywords such as "purpose," "credit," "love," "hug," "date," "music," and more trigger specific responses.
+   - For instance, if the input message contains "love," the bot responds with "Love you too honey~."
 
-- **Description**: Sets a rating for a specified user.
-- **Usage**: `/set <user_mention> <rating>`
-- **Example**: `/set @User123 8`
+   **Custom Responses**:
+   - The "talk" command provides customized responses for various scenarios, making interactions with users more engaging.
+   - Keywords trigger responses related to purposes, credits, emotions, hobbies, and more.
 
-### rate
+   **User Interaction**:
+   - The bot interacts with users in a friendly and expressive manner, providing virtual hugs, expressing love, and responding to inquiries.
 
-- **Description**: Displays the rating of a specified user.
-- **Usage**: `/rate <user_mention>`
-- **Example**: `/rate @User123`
-
-### send
-
-- **Description**: Sends an image to the current channel.
-- **Usage**: `/send`
-- **Example**: `/send`
-
-### select_
-
-- **Description**: Initiates a role-based selection process using a custom UI element.
-- **Usage**: `/select_`
-- **Example**: `/select_`
+   **Catch-All Response**:
+   - If the input message doesn't match any predefined keywords, the bot responds with a generic message suggesting the user to be more specific.
 
 ## Event Handling
 
@@ -105,12 +90,5 @@ This code implements a Discord bot using the `discord.py` library. The bot is de
 ### MyView
 
 - **Description**: A custom UI view that orchestrates the committee selection process.
-
-## Credits
-
-- **Lead Developer**: Teymur Babayev
-- **Sabis Sun IT Team Lead**: Ismayil Mollayev
-- **Contributor**: Tamerlan Dadashov
-- **Original Idea by**: Omar Mammadli
 
 ---
