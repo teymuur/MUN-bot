@@ -1,5 +1,4 @@
-# version 1.0-alpha
-
+#version 1.1-alpha
 import discord
 from discord.ext import commands
 
@@ -28,6 +27,7 @@ async def on_ready():
     print(f'Logged in as {bot.user.name} - {bot.user.id}')
     print('------')
 
+#commands
 @bot.slash_command()
 async def say(ctx,*text):
     my_str = ' '.join(text)
@@ -40,6 +40,11 @@ async def talk(ctx,*aa):
         response = 'This command has been made for Omar to sense female attention, No need to thank'
     elif "credit" in a:
         response = "Created by Teymur in behalf of the Sabis Sun Mun It Team. Original Idea: kakoyta Omar"
+    elif "life" in a and "what" in a:
+        response = "I dont what life is I am just an MUN bot"
+        await ctx.author.send("hello cutie pie~💕")
+    elif "MUN" in a:
+        response = "Sabis MUN is the best one"
     elif 'love' in a:
         response = 'Love you too honey~'
     elif "hug" in a:
@@ -82,7 +87,7 @@ async def rate(ctx, member: discord.Member):
         await ctx.send("User hasnt been rated before also uwu~")
 
 @bot.slash_command()
-@has_allowed_role() 
+@has_allowed_role("IT TEAM") 
 async def send(ctx):
 
     with open('my_image.jpg', 'rb') as f:
@@ -125,11 +130,14 @@ class MyView(discord.ui.View):
         ]      
     )
     async def select_callback(self, select, interaction): # the function called when the user is done selecting options
-        await interaction.response.send_message(f"Awesome! I like {select.values[0]} too!")
+        await interaction.user.send(f"Awesome! I like {select.values[0]} too!")
+        await interaction.user.send("I can make you the best delegate just $5")
 
 
-    
+
+ # commitee selection not working properly yet some weird error   
 @bot.slash_command()
+@has_allowed_role("IT TEAM")
 async def select_(ctx):
     view = MyView()
     await ctx.send(view=view)
@@ -145,4 +153,4 @@ async def select_(ctx):
 
 
 # Replace 'YOUR_TOKEN_HERE' with your actual bot token
-bot.run('')
+bot.run('MTEzOTU3NjIwODE4NzcyODAyMw.GAjc81.BQczNXgCikpnCQzRLFcQV-FoOXGXfdwcucIhXc')
