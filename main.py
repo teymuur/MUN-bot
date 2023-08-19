@@ -153,4 +153,4 @@ async def select_(ctx):
 
 
 # Replace 'YOUR_TOKEN_HERE' with your actual bot token
-bot.run('MTEzOTU3NjIwODE4NzcyODAyMw.GAjc81.BQczNXgCikpnCQzRLFcQV-FoOXGXfdwcucIhXc')
+bot.run('YOUR_TOKEN_HERE')
