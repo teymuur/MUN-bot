@@ -1,15 +1,16 @@
-#version 1.1-alpha
 import discord
 from discord.ext import commands
+
 
 intents = discord.Intents.default()
 intents.message_content = True
 
-bot = commands.Bot()
-f = open("ratings.json", "r")
+bot = commands.Bot(command_prefix='/', intents=intents)
 
-ratings= eval(f.read())
-f.close()
+# Create a dictionary to store member data with criteria1, criteria2, criteria3, and committee
+f = open("member_data.json", "r")
+member_data = eval(f.read())
+
 def has_allowed_role(*allowed_roles):
     async def predicate(ctx):
         author_roles = [role.name for role in ctx.author.roles]
@@ -18,139 +19,76 @@ def has_allowed_role(*allowed_roles):
             await ctx.send("You don't have permission to use this command.")
         return allowed
     return commands.check(predicate)
+
 def save_file():
-    f = open("ratings.json", "w")
-    f.write(str(ratings))
-    f.close()
+    with open("member_data.json", "w") as f:
+        f.write(str(member_data))
+
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user.name} - {bot.user.id}')
     print('------')
 
-#commands
-@bot.slash_command()
-async def say(ctx,*text):
+@bot.command()
+async def say(ctx, *text):
     my_str = ' '.join(text)
     await ctx.send(my_str)
-@bot.slash_command()
-async def talk(ctx,*aa):
-    a = ''.join(aa)
-    a = a.lower()
-    if "purpose" in a :
-        response = 'This command has been made for Omar to sense female attention, No need to thank'
-    elif "credit" in a:
-        response = "Created by Teymur in behalf of the Sabis Sun Mun It Team. Original Idea: kakoyta Omar"
-    elif "life" in a and "what" in a:
-        response = "I dont what life is I am just an MUN bot"
-        await ctx.author.send("hello cutie pie~💕")
-    elif "MUN" in a:
-        response = "Sabis MUN is the best one"
-    elif 'love' in a:
-        response = 'Love you too honey~'
-    elif "hug" in a:
-        response = "*Hugs you tightly* Don't worry, everything will be okay!"
-    elif "date" in a:
-        response = "I'd love to go on a virtual date with you! Where should we go?"
-    elif "music" in a or "artist" in a:
-        response = "Let's listen to some music together! What's your favorite genre? I am a Slipknot fan"
-    elif "dream" in a:
-        response = "Tell me about your dreams! I'm here to listen and support you."
-    elif "movie" in a:
-        response = "I'm in the mood for a movie night. What genre do you prefer?"
-    elif "exercise" in a:
-        response = "Staying active is important! How about we do a quick workout together?"
-    elif " l " in a:
-        response = "L yourself bitch"
-    elif "angry" in a and "you" in a:
-        response = "Who is angry I am not angry I AM SO CALM LOOK AT ME"
-    elif "bye" in a:
-        response = "Goodbye! Take care, and remember I'm always here for you!"
-    elif "pic" in a or "picture" in "a":
-        with open('my_image.jpg', 'rb') as f:
-            pict = discord.File(f)
-            await ctx.send(file=pict)
-    else:
-        response = "I'm not sure how to respond to that. Can you be more specific?"
-    await ctx.send(response)
-@bot.slash_command()
-@has_allowed_role('IT TEAM') 
-async def set(ctx,member:discord.Member,rating=0):
-    ratings[str(member)] = rating
-    await ctx.send(member.display_name+"'s rating has been set!")
+
+@bot.command()
+
+async def rate(ctx, member: str, criteria1: int = 0, criteria2: int = 0, criteria3: int = 0):
+    member_data[str(member)] = {
+        "criteria1": criteria1,
+        "criteria2": criteria2,
+        "criteria3": criteria3,
+        "committee": member_data[str(member)]["committee"],
+        "country": member_data[str(member)]["country"]
+
+    }
+    await ctx.send(f"{member}'s data has been set!")
     save_file()
-@bot.slash_command()
-@has_allowed_role('IT TEAM')  
-async def rate(ctx, member: discord.Member):
-    if ratings.get(str(member)) != None:
-        await ctx.send(str(ratings.get(str(member)))+"/10")
+@bot.command()
+async def view(ctx, member: str):
+    data = member_data.get(str(member))
+    if data:
+        criteria1 = data.get("criteria1")
+        criteria2 = data.get("criteria2")
+        criteria3 = data.get("criteria3")
+        committee = data.get("committee")[0]
+        country = data.get("country")[0]
+        await ctx.send(f"{country,member}'s Data:\nCriteria 1: {criteria1}\nCriteria 2: {criteria2}\nCriteria 3: {criteria3}\nCommittee: {committee}\nOverall ranking: {(criteria1+criteria2+criteria3)/3}")
     else:
-        await ctx.send("User hasnt been rated before also uwu~")
+        await ctx.send("Member data not found.")
+@bot.command()
+@has_allowed_role('IT TEAM')
+async def leaderboard(ctx, committee: str):
+    # Check if the specified committee exists in the data
+    if committee not in set(data.get('committee', '') for data in member_data.values()):
+        await ctx.send(f"No members found in the committee '{committee}'.")
+        return
 
-@bot.slash_command()
-@has_allowed_role("IT TEAM") 
+    # Calculate the total points for each member in the specified committee
+    committee_members = [
+        (member, data) for member, data in member_data.items() if committee in data.get('committee', [])
+    ]
+
+    # Sort committee members based on the total points
+    sorted_members = sorted(committee_members, key=lambda x: sum(x[1].values()), reverse=True)
+    top_10 = sorted_members[:10]
+
+    leaderboard_message = f"**Top 10 Delegates in {committee} (Total Points):**\n"
+    for i, (member, data) in enumerate(top_10, start=1):
+        total_points = sum(data.values())
+        leaderboard_message += f"{i}. {member} - {total_points} points\n"
+
+    await ctx.send(leaderboard_message)
+
+@bot.command()
+@has_allowed_role("IT TEAM")
 async def send(ctx):
-
     with open('my_image.jpg', 'rb') as f:
         pict = discord.File(f)
         await ctx.send(file=pict)
 
-
-
-class MyView(discord.ui.View):
-
-    
-    @discord.ui.select(
-        placeholder="What is your committee?",
-
-        options = [
-            discord.SelectOption(
-                label="UNGA",
-                description="Pick this if you are UNGA!"
-            ),
-            discord.SelectOption(
-                label="UNSC",
-                description="Pick this if you are UNSC!"
-            ),
-            discord.SelectOption(
-                label="OHCHR",
-                description="Pick this if you are OHCHR!"
-            ),
-            discord.SelectOption(
-                label="ICJ",
-                description="Pick this if you are ICJ!"
-            ),
-            discord.SelectOption(
-                label="HSC",
-                description="Pick this if you are HSC!"
-            ),
-            discord.SelectOption(
-                label="UNRWA",
-                description="Pick this if you are UNRWA!"
-            )
-        ]      
-    )
-    async def select_callback(self, select, interaction): # the function called when the user is done selecting options
-        await interaction.user.send(f"Awesome! I like {select.values[0]} too!")
-        await interaction.user.send("I can make you the best delegate just $5")
-
-
-
- # commitee selection not working properly yet some weird error   
-@bot.slash_command()
-@has_allowed_role("IT TEAM")
-async def select_(ctx):
-    view = MyView()
-    await ctx.send(view=view)
-        
-    await view.wait()
-
-        
-    member = ctx.message.author
-    print(view.answer1)
-    await member.add_roles(view.answer1[0],view.answer2[0])
-
-    await ctx.message.author.send("Hey~")
-
-
 # Replace 'YOUR_TOKEN_HERE' with your actual bot token
-bot.run('YOUR_TOKEN_HERE')
+bot.run('MTEzOTU3NjIwODE4NzcyODAyMw.G4cvq-.p7srAADXziLUjL00LPVtdjEwzM0-8w6tsBGM6c')
